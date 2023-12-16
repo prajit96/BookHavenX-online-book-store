@@ -1,0 +1,42 @@
+<div>
+    <div class="flex justify-center">
+        
+    </div>
+    <div class="bg-[#2B2A4C] p-2 mb-2">
+        <h1 class="text-white font-bold text-center">Registered Users</h1>
+    </div>
+    <!-- List  -->
+    <div *ngIf="!loading && users.length !== 0" id="purchase-lise" class="h-[610px] flex flex-col gap-2 p-3 overflow-y-auto">
+
+        <div *ngFor="let item of users" class="flex justify-between items-center border-b">
+            <div class="flex gap-2 ">
+                <div class="w-[55px]">
+                    <img src="{{item.image}}" alt="book image" class="w-[100%] object-cover">
+                </div>
+                <div class="p-1">
+                    <h1 class="font-bold">{{item.email}}</h1>
+                    <div class="flex gap-2">
+                        <p class="text-green-700 font-bold text-[15px]">{{item.username}}</p>
+                        <p class="text-[#EA906C] font-bold text-[15px]">{{item.role}}</p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button (click)="deleteUser(item._id)" class="font-bold text-red-700 mr-8 hover:text-red-800">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+   
+
+
+
+    <!-- Loading  -->
+    <div *ngIf="loading" id="loading-cont" class="h-[500px] flex justify-center items-center">
+        <app-loading [w]="'60px'" [h]="'60px'"></app-loading>
+    </div>
+
+</div>

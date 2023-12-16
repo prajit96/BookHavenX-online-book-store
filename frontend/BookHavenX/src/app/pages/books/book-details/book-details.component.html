@@ -1,0 +1,204 @@
+<div class="min-h-screen flex justify-center items-center">
+   
+    <!-- Loading  -->
+    <app-loading *ngIf="loading" [w]="'100px'" [h]="'100px'"></app-loading>
+
+    <!-- Details and Description  -->
+    <div *ngIf="!loading" id="book-details" class="lg:w-[80%] md:w-[90%] m-auto lg:mt-[100px] md:mt-[50px]">
+        <!-- Discussions  -->
+        <div class="flex justify-end gap-[10px] border-b border-b-gray-400 pb-[20px]">
+            <button (click)="openSeeDiscussionModal()" type="button" class="text-red-700 bg-white border border-red-700 hover:bg-red-100 font-medium rounded-lg text-md lg:px-5 md:px-2 py-2.5">See Discussions</button>
+            <button (click)="openCreateDiscussionModal()" type="button" class="text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-md lg:px-5 md:px-2 py-2.5">+ Discussion</button>
+        </div>
+        <!-- Details  -->
+        <div class="flex justify-center items-start gap-[50px] mt-[20px]">
+            <img src="{{book.image}}" alt="image" class="lg:w-[350px] md:w-[200px]">
+            <!-- Details  -->
+            <div class="flex flex-col gap-3 overflow-auto break-words">
+                <h1 class="text-[25px] font-extrabold break-words">{{book.title}}</h1>
+                <div class="flex gap-1 items-center">
+                   <img src="https://bookscape.com/_next/static/media/author-icon.3b6ba7b3.svg" alt="author-icon"> 
+                   <p class="text-gray-500">{{book.author}}</p>
+                </div>
+                <div class="w-[200px] p-2 rounded-lg border border-gray-300">
+                    <p class="text-gray-500">{{book.genre.toUpperCase()}}</p>
+                </div>
+                <div class="w-[200px] p-2 rounded-lg border border-gray-300">
+                    <p class="text-gray-500">English</p>
+                </div>
+                <div class="w-[200px] p-4 rounded-lg border border-gray-300">
+                    <p class="text-gray-500">Paperback</p>
+                    <p class="font-bold text-[20px] text-[#E64646]">₹{{book.price}}</p>
+                </div>
+                <div class="mt-[20px] mb-[10px] flex gap-[30px] items-center">
+                    <button (click)="addToCart()" type="button" class="text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-md lg:px-5 md:px-2 py-2.5">Add to Cart</button>
+                    <button (click)="buyNow()" type="button" class="text-red-700 bg-white border border-red-700 hover:bg-red-100 font-medium rounded-lg text-md lg:px-5 md:px-2 py-2.5">Buy Now</button>
+                </div>
+                <p class="text-gray-700 font-extrabold text-[18px] ">Description</p>
+                <p class="text-gray-600">{{book.description}}</p>
+            </div>
+        </div>
+
+        <!-- Review  -->
+        <div id="book-review" class="mt-[50px] mb-[50px] pt-[20px] border-t border-t-gray-400">
+            <div class="flex justify-between items-center border-b pb-[20px] mb-2">
+                <h1 class="font-extrabold text-[25px]">Reviews</h1>
+                <button (click)="openModal()" type="button" class="text-[#E64646] font-bold cursor-pointer">Write a review</button>
+            </div>
+            <div>
+                <!-- Empty Review  -->
+                <div *ngIf="reviews.length === 0" class="flex flex-col justify-center items-center">
+                    <img src="https://bookscape.com/_next/static/media/first_review.d44792d4.png" alt="">
+                    <p class="text-gray-400">No reviews added yet. Be the first one to review</p>
+                </div>
+                <!-- Review List  -->
+                <div *ngIf="reviews.length !== 0" class="flex flex-col gap-2">
+                    <div *ngFor="let item of reviews" class="border-b pb-4">
+                        <p>{{item.review}}</p>
+                        <div class="flex items-center gap-1">
+                            <i class="fa-solid fa-star text-[10px] text-[#E64646]"></i> 
+                            <p class="font-bold">{{item.rating}}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-user text-[10px] text-[#E64646]"></i>
+                            <p class="font-semibold text-[14px]">{{item.username}}</p>
+                            <p class="text-gray-500 text-[12px]">({{item.role}})</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+     <!-- See Discussions Modal -->
+     <div *ngIf="isSeeDiscussionsModalOpen" class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center">
+        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50" (click)="closeSeeDiscussionModal()"></div>
+        <!-- Modal Content -->
+        <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+      
+          <!-- Modal Header -->
+          <div class="modal-header p-3 border-b flex justify-between items-center bg-[#EA906C]">
+            <h3 class="text-xl font-semibold text-white dark:text-white">
+                Discussion List
+            </h3>
+            <button (click)="closeSeeDiscussionModal()" class="text-white hover:text-gray-700 focus:outline-none text-[30px]">
+              &#215;
+            </button>
+          </div>
+      
+          <!-- Modal Body -->
+          <div class="modal-body p-4 md:p-5 space-y-4 flex flex-col gap-3">
+            <!-- No Discussion  -->
+            <div *ngIf="discussions.length === 0" class="h-[300px] flex flex-col gap-[10px] justify-center items-center">
+                <i class="fa-solid fa-face-sad-tear text-[30px] text-[#B31312]"></i>
+                <h1 class="font-extrabold text-[30px] text-[#B31312]">No Discussions Found</h1>
+                <p class="text-gray-500">Be the first one to create</p>
+            </div>
+
+            <!-- Discussion List  -->
+            <div *ngIf="discussions.length !== 0" class="lg:h-[400px] md:h-[300px] flex flex-col gap-[10px] overflow-y-auto ">
+                <div *ngFor="let item of discussions" (click)="handleViewDiscussion(item._id)" class="border-b pb-2 cursor-pointer">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-user-group"></i>
+                        <p class="font-semibold break-words hover:underline">{{item.title}}</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-user text-[10px] text-[#E64646]"></i>
+                        <p class="font-semibold text-[12px] text-[#E64646]">{{item.username}}</p>
+                    </div>
+                </div>
+            </div>
+
+
+          </div>
+      
+          <!-- Modal Footer -->
+          <div class="modal-footer">
+          </div>
+      
+        </div>
+      </div>
+
+      
+      <!-- Review Modal -->
+      <div *ngIf="isReviewModalOpen" class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center">
+        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50" (click)="closeModal()"></div>
+        <!-- Modal Content -->
+        <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+      
+          <!-- Modal Header -->
+          <div class="modal-header p-3 border-b flex justify-between items-center">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                Tell us about the book
+            </h3>
+            <button (click)="closeModal()" class="text-gray-500 hover:text-gray-700 focus:outline-none text-[30px]">
+              &#215;
+            </button>
+          </div>
+      
+          <!-- Modal Body -->
+          <div class="modal-body p-4 md:p-5 space-y-4 flex flex-col gap-2">
+            <div class="flex flex-col gap-[3px]">
+              <p class="text-[16px] font-bold text-gray-700">Rate your experience</p>
+              <select name="ratingInp" id="rating"  [(ngModel)]="ratingInp" class="p-2 text-5 rounded-lg">
+               <option value="1">1</option>
+               <option value="2">2</option>
+               <option value="3">3</option>
+               <option value="4">4</option>
+               <option value="5">5</option>
+              </select>
+            </div>
+            <textarea name="reviewInp" id="review"  [(ngModel)]="reviewInp" cols="30" rows="10" placeholder="Want to share more? Write here..." class="rounded-lg"></textarea>
+          </div>
+      
+          <!-- Modal Footer -->
+          <div class="modal-footer p-4 border-t flex gap-5">
+            <button (click)="postReviewBtn()" type="button" class="text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-md lg:px-5 md:px-2 py-2.5">POST A REVIEW</button>
+            <button (click)="closeModal()" type="button" class="text-red-700 bg-white border border-red-700 hover:bg-red-100 font-medium rounded-lg text-md lg:px-5 md:px-2 py-2.5">CANCEL</button>
+          </div>
+      
+        </div>
+      </div>
+
+      <!-- Create Discussion Modal  -->
+      <div *ngIf="isCreateDiscussionsModalOpen" class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center">
+        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50" (click)="closeCreateDiscussionModal()"></div>
+        <!-- Modal Content -->
+        <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+      
+          <!-- Modal Header -->
+          <div class="modal-header p-3 border-b flex justify-between items-center">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                Create Discussion
+            </h3>
+            <button (click)="closeCreateDiscussionModal()" class="text-gray-500 hover:text-gray-700 focus:outline-none text-[30px]">
+              &#215;
+            </button>
+          </div>
+      
+          <!-- Modal Body -->
+          <div class="modal-body p-4 md:p-5 space-y-4 flex flex-col gap-2">
+            <div class="flex flex-col gap-[3px]">
+              <label for="title" class="text-[16px] font-bold text-gray-700">Title</label>
+              <input id="title" [(ngModel)]="title" type="text" placeholder="Title" class="rounded-lg">
+          </div>
+            <div class="flex flex-col gap-[3px]">
+                <label for="topic" class="text-[16px] font-bold text-gray-700">Topic/Genre</label>
+                <input id="topic" [(ngModel)]="topic" type="text" placeholder="Topic, Genre, Book" class="rounded-lg">
+            </div>
+            
+            <textarea id="description"  [(ngModel)]="description" cols="5" rows="5" placeholder="description..." class="rounded-lg"></textarea>
+          </div>
+      
+          <!-- Modal Footer -->
+          <div class="modal-footer p-4 border-t flex gap-5">
+            <button (click)="createDiscussionBTN()" type="button" class="text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-md lg:px-5 md:px-2 py-2.5">CREATE</button>
+            <button (click)="closeCreateDiscussionModal()" type="button" class="text-red-700 bg-white border border-red-700 hover:bg-red-100 font-medium rounded-lg text-md lg:px-5 md:px-2 py-2.5">CANCEL</button>
+          </div>
+      
+        </div>
+      </div>
+</div>

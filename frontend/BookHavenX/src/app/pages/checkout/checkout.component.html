@@ -1,0 +1,42 @@
+<div class="flex flex-col mt-7 mb-8 text-[#963e7b]">
+    <div class="flex lg:flex-row md:flex-col self-center shadow-xl">
+      <div class="bg-[#2B2A4C] lg:w-[400px] md:w-[100%] flex items-center justify-center">
+        <img src="../../../assets/images/robot-7818574_1280.jpg" alt="logo" class="lg:w-[100%] md:w-[100px]" />
+      </div>
+      <div class="w-[35rem] pl-[2rem] pt-[10px] pr-[3rem] pb-[20px]">
+        <form (ngSubmit)="onSubmit()" #myForm="ngForm">
+          <p>Shipping address</p>
+          <textarea id="address" name="address" [(ngModel)]="delivery_address" class="w-[100%] inputbox" required></textarea>
+          <p>Pincode</p>
+          <input type="number" class="inputbox" name="pincode" [(ngModel)]="pincode" maxlength="6" required />
+          <p>Cardholder Name</p>
+          <input type="text" class="inputbox" name="cardholder" [(ngModel)]="cardholder" required />
+          <p>Card Number</p>
+          <input  type="number" class="inputbox" name="cardNumber" value="cardNumber" [(ngModel)]="cardNumber" (change)="handleValidCardNo()" id="card_number" maxlength="16" required />
+          <p>Card Type</p>
+          <select class="inputbox" name="cardType" [(ngModel)]="cardType" id="card_type" required>
+            <option value="">--Select a Card Type--</option>
+            <option value="Visa">Visa</option>
+            <option value="RuPay">RuPay</option>
+            <option value="MasterCard">MasterCard</option>
+          </select>
+          <div class="expcvv">
+  
+            <p class="expcvv_text">Expiry</p>
+            <input type="date" class="inputbox" name="expiry_date" [(ngModel)]="expiry_date" id="exp_date" required />
+  
+            <p class="expcvv_text2">CVV</p>
+            <input type="password" class="inputbox" name="cvv" [(ngModel)]="cvv" id="cvv" placeholder="***" pattern="\d{3}" maxlength="3" required />
+          </div>
+          <p></p>
+          <div class="flex gap-3.5 items-center">
+              <button [disabled]="loading" [ngClass]="{ 'disabled-hover': loading }" type="submit" class="button">Checkout</button>
+              <!-- Loading  -->
+              <app-loading *ngIf="loading" [w]="'20px'" [h]="'20px'"></app-loading>
+          </div>
+
+
+        </form>
+      </div>
+    </div>
+  </div>

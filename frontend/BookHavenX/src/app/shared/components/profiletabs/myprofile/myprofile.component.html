@@ -1,0 +1,93 @@
+<div>
+    <div class="bg-[#2B2A4C] p-2">
+      <h1 class="text-white font-bold text-center">My Profile</h1>
+    </div>
+    <form (ngSubmit)="submitForm()" #signupForm="ngForm" class=" w-[80%] m-auto mt-[30px]">
+
+
+        <!-- Choose Avatar & Edit Icon  -->
+        <div class="flex justify-between items-center">
+            <div id="avatars-container">
+                <p class="font-bold text-[#B31312]">Choose avatar</p>
+                <div class="flex justify-center items-center gap-3 mt-2">
+                    <img (click)="selectAvatar(avatars[0], '1st')" src="{{avatars[0]}}" alt="" class="w-[60px] cursor-pointer">
+                    <img (click)="selectAvatar(avatars[1], '2nd')" src="{{avatars[1]}}" alt="" class="w-[60px] cursor-pointer">
+                    <img (click)="selectAvatar(avatars[2], '3rd')" src="{{avatars[2]}}" alt="" class="w-[60px] cursor-pointer">
+                    <img (click)="selectAvatar(avatars[3], '4th')" src="{{avatars[3]}}" alt="" class="w-[60px] cursor-pointer">
+                </div>
+            </div>
+            <button (click)="handleEditIcon()" id="edit-icon">
+                <i class="fa-solid fa-user-pen text-[30px] text-[#2B2A4C] hover:text-black"></i>
+            </button>
+        </div>
+
+        <p *ngIf="selectedAvatar" class="mt-2 text-green-800 text-[14px]"><i class="fa-solid fa-circle-check"></i> {{selectedAvatar}} avatar selected</p>
+
+        <!-- Role Select -->
+        <div class="mb-4 mt-5">
+          <label for="role" class="block text-sm font-medium text-gray-600">Role</label>
+          <select id="role" [(ngModel)]="user.role" name="role" [disabled]="!edit" [ngClass]="{ 'disabled-hover': !edit }" class="mt-1 p-2 w-full border rounded-md">
+            <option value="reader">Reader</option>
+            <option value="author">Author</option>
+          </select>
+        </div>
+    
+        <!-- Username Input -->
+        <div class="mb-4">
+          <label for="username" class="block text-sm font-medium text-gray-600">Username</label>
+          <div class="flex items-center relative">
+            <input 
+              type="text" 
+              id="username" 
+              name="username" 
+              class="mt-1 p-2 w-full border rounded-md" 
+              [(ngModel)]="user.username"
+              (input)="checkUsernameAvailability()"
+              [disabled]="!edit"
+              [ngClass]="{ 'disabled-hover': !edit }"
+              >
+              <div *ngIf="usernameloading" class="absolute right-3">
+                <app-loading  [w]="'20px'" [h]="'20px'"></app-loading>
+              </div>
+          </div>
+          <div *ngIf="usernameError" class="text-[#B31312] text-sm mt-1"><i class="fa-solid fa-circle-xmark"></i> {{ usernameError }}</div>
+          <div *ngIf="usernameAvailable" class="text-green-700 text-sm mt-1"><i class="fa-solid fa-circle-check"></i> username available</div>
+        </div>
+    
+        <!-- Email Input -->
+        <div class="mb-4">
+          <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            class="mt-1 p-2 w-full border rounded-md" 
+            [(ngModel)]="user.email"
+            disabled
+            [ngClass]="'disabled-hover'"
+            >
+        </div>
+    
+        <!-- Password Input -->
+        <div class="mb-4">
+          <label for="password" class="block text-sm font-medium text-gray-600">Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            class="mt-1 p-2 w-full border rounded-md" 
+            [(ngModel)]="user.password"
+            (input)="checkPasswordStrength()"
+            [disabled]="!edit"
+            [ngClass]="{ 'disabled-hover': !edit }"
+            >
+            <div *ngIf="passwordError" class="text-[#B31312] text-sm mt-1"><i class="fa-solid fa-circle-info"></i> {{ passwordError }}</div>
+        </div>
+    
+        <!-- Submit Button -->
+        <div class="flex items-center gap-3">
+          <button [disabled]="loading || !edit" [ngClass]="{ 'disabled-hover': !edit }" type="submit" class="text-white bg-[#B31312] hover:bg-[#803232] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg w-[full] sm:w-auto px-5 py-2.5 text-center">Update</button>
+          <app-loading *ngIf="loading" [w]="'20px'" [h]="'20px'"></app-loading>
+        </div>
+      </form>
+</div>

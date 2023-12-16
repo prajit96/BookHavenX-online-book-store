@@ -1,0 +1,129 @@
+<div class="lg:w-[80%] md:w-[90%] m-auto mt-[40px]">
+    <!-- Header  -->
+    <div class="flex justify-between items-center border-b pb-4">
+        <h1 class="text-[25px] font-extrabold text-gray-700">Reading Lists</h1>
+        <div class="flex gap-5 items-end">
+            <button (click)="handleAllTab()" [style.color]="openTab === 'all' ? 'red' : 'black' " class="font-extrabold text-[20px]">All</button>
+            <button (click)="handleYourTab()" [style.color]="openTab === 'your' ? 'red' : 'black' " class="font-extrabold text-[20px]">Your</button>
+        </div>
+        <button (click)="openModal()" type="button" class="text-red-700 bg-white border border-red-700 hover:bg-red-100 font-medium rounded-lg text-md lg:px-5 md:px-2 py-2.5">+ Create New</button>
+    </div>
+
+    <!-- Loading  -->
+    <div *ngIf="loading" class="w-[100%] h-[300px] m-auto flex justify-center items-center">
+        <app-loading [w]="'50px'" [h]="'50px'"></app-loading>
+    </div>
+    <!-- Lists  -->
+    <div *ngIf="!loading">
+        <div>
+            <!-- All  -->
+            <div *ngIf="openTab === 'all'" class="mt-[30px] p-4 grid lg:grid-cols-3 md:grid-cols-2 gap-5">
+                <div *ngFor="let item of publicLists" class="flex justify-between items-center p-3 shadow-lg">
+                    <div class="flex flex-col gap-1">
+                        <h1 class="font-bold text-gray-800 text-[18px]">{{item.title}}</h1>
+                        <p>{{item.books.length}} Books</p>
+                        <div class="flex items-center gap-2">
+                            <img src="https://bookscape.com/_next/static/media/apple-touch-icon-57x57.e1bb8861.png" alt="" class="w-[25px]">
+                            <h1 class="font-bold text-gray-800 text-[15px]">Created by {{item.username.toUpperCase()}}</h1>
+                        </div>
+                    </div>
+                    <button (click)="viewListBtn(item._id)" class="font-bold text-red-600">View</button>
+                </div>
+            </div>
+    
+            <!-- Your  -->
+            <div *ngIf="openTab === 'your'" class="mt-[30px] p-4 grid lg:grid-cols-3 md:grid-cols-2 gap-5">
+                <div *ngFor="let item of privateLists" class="flex justify-between p-3 shadow-lg">
+                  <div class="flex flex-col gap-1">
+                    <h1 class="font-bold text-gray-800 text-[18px]">{{item.title}}</h1>
+                    <p>{{item.books.length}} Books</p>
+                    <div class="flex items-center gap-2">
+                        <img src="https://bookscape.com/_next/static/media/apple-touch-icon-57x57.e1bb8861.png" alt="" class="w-[25px]">
+                        <h1 class="font-bold text-gray-800 text-[15px]">Created by You</h1>
+                    </div>
+                  </div>
+                  <div class="flex flex-col justify-between items-end">
+                    <button  (click)="handleDeleteRL(item._id)" class="text-red-600 hover:text-black"><i class="fa-regular fa-trash-can"></i></button>
+                    <button (click)="viewListBtn(item._id)" class="font-bold text-red-600">View</button>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Create New Modal  -->
+    <div *ngIf="isModalOpen" class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center">
+        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50" (click)="closeModal()"></div>
+        <!-- Modal Content -->
+        <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+      
+          <!-- Modal Header -->
+          <div class="modal-header p-3 border-b flex justify-between items-center">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                Create a readlist
+            </h3>
+            <button (click)="closeModal()" class="text-gray-500 hover:text-gray-700 focus:outline-none text-[30px]">
+              &#215;
+            </button>
+          </div>
+      
+          <!-- Modal Body -->
+          <div class="modal-body p-4 md:p-5 space-y-4 flex flex-col">
+            <p class="text-gray-600">Title</p>
+            <input [(ngModel)]="listTitleInp" type="text" placeholder="Enter the title">
+          </div>
+      
+          <!-- Modal Footer -->
+          <div class="modal-footer p-4 border-t flex gap-5">
+            <button (click)="createReadingList()" type="button" class="text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-md lg:px-5 md:px-2 py-2.5">CREATE</button>
+            <button (click)="closeModal()" type="button" class="text-red-700 bg-white border border-red-700 hover:bg-red-100 font-medium rounded-lg text-md lg:px-5 md:px-2 py-2.5">CANCEL</button>
+          </div>
+      
+        </div>
+      </div>
+
+    <!-- View List Modal  -->
+    <div *ngIf="isViewBooksModalOpen" class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center">
+        <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50" (click)="closeViewListModal()"></div>
+        <!-- Modal Content -->
+        <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+      
+          <!-- Modal Header -->
+          <div class="modal-header p-3 border-b flex justify-between items-center">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                {{bookTitle}}
+            </h3>
+            <button (click)="closeViewListModal()" class="text-gray-500 hover:text-gray-700 focus:outline-none text-[30px]">
+              &#215;
+            </button>
+          </div>
+      
+          <!-- Modal Body -->
+          <div class="modal-body h-[400px] p-4 md:p-5 space-y-4 flex flex-col">
+            <!-- Loading  -->
+            <div *ngIf="booksLoading" class="w-[100%] h-[300px] m-auto flex justify-center items-center">
+                <app-loading [w]="'20px'" [h]="'20px'"></app-loading>
+            </div>
+            <!-- Books  -->
+            <div *ngIf="!booksLoading" class="flex flex-col gap-2 overflow-y-auto">
+                <div *ngFor="let item of books" class="flex gap-2 items-center shadow-md">
+                    <img src="{{item.image}}" alt="" class="w-[50px]">
+                    <div class="flex flex-col gap-[2px]">
+                        <h1 (click)="seeBookDetails(item._id)" class="font-bold text-[16px] cursor-pointer hover:text-red-500">{{item.title}}</h1>
+                        <p class="text-[14px] text-gray-500">{{item.author}}</p>
+                        <p class="text-[14px] text-gray-500">{{item.genre.toUpperCase()}}</p>
+                    </div>
+                </div>
+            </div>
+          </div>
+      
+          <!-- Modal Footer -->
+          <div class="modal-footer p-4 border-t flex gap-5">
+           
+          </div>
+      
+        </div>
+      </div>
+</div>

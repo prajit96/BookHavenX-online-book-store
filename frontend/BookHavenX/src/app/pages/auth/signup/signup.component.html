@@ -1,0 +1,74 @@
+<div class="min-h-screen flex justify-center items-center">
+  <div class="w-[400px] shadow-lg p-5 pb-[30px] rounded-lg">
+      <form (ngSubmit)="submitForm()" #signupForm="ngForm">
+        <div class="flex justify-center items-center gap-3">
+          <img src="../../../../assets/images/logo1.png" alt="" class="w-[100px]">
+          <h1 class="text-[30px] font-bold text-[#B31312]">Signup</h1>
+        </div>
+        <!-- Role Select -->
+        <div class="mb-4">
+          <label for="role" class="block text-sm font-medium text-gray-600">Role</label>
+          <select id="role" [(ngModel)]="user.role" name="role" class="mt-1 p-2 w-full border rounded-md">
+            <option value="reader">Reader</option>
+            <option value="author">Author</option>
+          </select>
+        </div>
+    
+        <!-- Username Input -->
+        <div class="mb-4">
+          <label for="username" class="block text-sm font-medium text-gray-600">Username</label>
+          <div class="flex items-center relative">
+            <input 
+              type="text" 
+              id="username" 
+              name="username" 
+              class="mt-1 p-2 w-full border rounded-md" 
+              [(ngModel)]="user.username"
+              (input)="checkUsernameAvailability()">
+              <div *ngIf="usernameloading" class="absolute right-3">
+                <app-loading  [w]="'20px'" [h]="'20px'"></app-loading>
+              </div>
+          </div>
+          <div *ngIf="usernameError" class="text-[#B31312] text-sm mt-1"><i class="fa-solid fa-circle-xmark"></i> {{ usernameError }}</div>
+          <div *ngIf="usernameAvailable" class="text-green-700 text-sm mt-1"><i class="fa-solid fa-circle-check"></i> username available</div>
+        </div>
+    
+        <!-- Email Input -->
+        <div class="mb-4">
+          <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            class="mt-1 p-2 w-full border rounded-md" 
+            [(ngModel)]="user.email"
+            (input)="checkEmailValidation()"
+            >
+          <div *ngIf="emailError" class="text-[#B31312] text-sm mt-1"><i class="fa-solid fa-circle-info"></i> {{ emailError }}</div>
+        </div>
+    
+        <!-- Password Input -->
+        <div class="mb-4">
+          <label for="password" class="block text-sm font-medium text-gray-600">Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            class="mt-1 p-2 w-full border rounded-md" 
+            [(ngModel)]="user.password"
+            (input)="checkPasswordStrength()"
+            >
+            <div *ngIf="passwordError" class="text-[#B31312] text-sm mt-1"><i class="fa-solid fa-circle-info"></i> {{ passwordError }}</div>
+        </div>
+    
+        <!-- Submit Button -->
+        <div class="flex items-center gap-3">
+          <button [disabled]="loading" [ngClass]="{ 'disabled-hover': loading }" type="submit" class="text-white bg-[#B31312] hover:bg-[#803232] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg w-[full] sm:w-auto px-5 py-2.5 text-center">Submit</button>
+          <app-loading *ngIf="loading" [w]="'20px'" [h]="'20px'"></app-loading>
+        </div>
+        <div class="text-sm mt-5 font-medium text-gray-500 dark:text-gray-300">
+          Already a user? <a routerLink="/login" class="text-blue-700 hover:underline dark:text-blue-500">Login</a>
+        </div>
+      </form>
+    </div>
+</div>

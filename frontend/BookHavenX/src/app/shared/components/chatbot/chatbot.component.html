@@ -1,0 +1,55 @@
+<div class="fixed lg:bottom-[20px] lg:right-[50px] md:bottom-[20px] md:right-[20px] z-50 text-[16px]">
+
+    <!-- Chat Icon  -->
+    <img (click)="toggleChatbot()" src="../../../assets/images/chatbot1.png" alt="Chatbot Icon"
+        class="w-[60px] h-[60px] cursor-pointer" />
+
+    <!-- Chatbot Popup -->
+    <div *ngIf="showChatbot" class="fixed lg:bottom-[50px] lg:right-[110px] md:bottom-[70px] md:right-[70px] bg-gray-100  shadow-2xl min-h-[500px] w-[400px] flex flex-col justify-between">
+
+        <!-- Header  -->
+        <div class="flex justify-center items-center gap-[10px] text-white bg-[#2B2A4C] p-3">
+            <i class="fa-solid fa-robot"></i>
+            <h1 class="text-center font-bold">Need Help?</h1>
+        </div>
+
+        <!-- Message Container -->
+        <div #scrollable_parent class="flex flex-col bg-gray-100 overflow-y-auto pt-4 pl-4 pr-4 custom-scrollbar h-[400px] scroll-smooth">
+            <!-- Chat Messages -->
+            <div *ngFor="let message of messages">
+                <!-- Bot Response -->
+                <div *ngIf="message.from === 'bot'" class="font-semibold flex justify-start items-start gap-[5px] mt-2">
+                    <img src="../../../assets/images/chatbot.png" alt="chatbot" width="20px" class="mt-1">
+                    <div class="flex flex-col">
+                        <p class="bg-white p-2 rounded-lg max-w-[70%] break-words shadow-sm">{{ message.text }}</p> 
+                    </div>
+                </div>
+
+                <!-- Books Suggestions  -->
+                <div *ngIf="message.from === 'books'" class="font-semibold flex justify-start items-start gap-[5px] mt-2">
+                    <div class="flex flex-col">
+                        <p class="bg-white p-2 rounded-lg max-w-[70%] break-words shadow-sm">{{ message.text }}</p> 
+                        <ng-container>
+                            <div class="flex flex-col gap-2 mt-1">
+                                <a  *ngFor="let book of message.books" (click)="handleViewBook(book._id)"  class="bg-blue-100 text-[#2B2A4C] p-1 rounded-lg max-w-[90%] break-words shadow-sm hover:underline cursor-pointer">{{ book.title }}</a>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <!-- User Response -->
+                <div *ngIf="message.from === 'user'" class="text-white flex justify-end items-end gap-[5px] mt-2">
+                    <p class="bg-green-400 p-2 rounded-lg max-w-[70%] break-words shadow-sm">{{ message.text }}</p>
+                    <i class="fa-solid fa-user mb-[2px] text-[#2B2A4C]"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Container -->
+        <div id="inputField" class="flex items-center p-4">
+            <input [disabled]="loading" type="text" [(ngModel)]="userMessage" (keyup.enter)="sendMessage()" placeholder="Type your message..." class="flex-grow border-2 border-gray-300 p-2 rounded-md mr-2 focus:outline-none focus:border-blue-500" />
+            <button *ngIf="!loading" (click)="sendMessage()" class="bg-[#2B2A4C] text-white p-2 rounded-md hover:bg-[#1e1e36]">Send</button>
+            <app-loading *ngIf="loading" [w]="'56px'" [h]="'20px'"></app-loading>
+        </div>
+    </div>
+</div>

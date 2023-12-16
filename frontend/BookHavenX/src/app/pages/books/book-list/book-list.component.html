@@ -1,0 +1,41 @@
+<div id="filter-search" class="mt-[40px] flex flex-row justify-end gap-[10px] w-[95%] m-auto pl-[300px] mb-[10px] pb-[10px] border-b-2 border-gray-200">
+    <form class="w-[300px]">
+      <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+            fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+          </svg>
+        </div>
+        <input type="search" [(ngModel)]="searchInput"  id="default-search"
+          class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Title, Author, Genre"  name="searchInput" (change)="handleSearch()" required>
+      </div>
+    </form>
+  
+    <select id="sort" [(ngModel)]="sortingOrder"  (change)="handleSortBy()">
+      <option value=""><span>Sort by : </span>Relevance</option>
+      <option value="asc">Low to High</option>
+      <option value="desc">High to Low</option>
+    </select>
+  
+  </div>
+  
+  <div class="flex gap-4 w-[95%] m-auto mb-10">
+    <!-- Sidebar  -->
+    <app-sidebar-booklist [handleFilterCategory]="handleFilterCategory" [categoryValue]="categoryValue" [handleRatingCateogry]="handleRatingCateogry"></app-sidebar-booklist>
+
+    <div class="w-[100%]">
+      <!-- Loading  -->
+      <div *ngIf="loading" id="loading-cont" class="min-h-screen flex justify-center items-center">
+        <app-loading [w]="'60px'" [h]="'60px'"></app-loading>
+      </div>
+      <!-- Books  -->
+      <div *ngIf="!loading" class="w-[100%] m-auto grid lg:grid-cols-5 md:grid-cols-2 sm:grid-cols-1 gap-3">
+        <app-product-card *ngFor="let item of books" [item]="item" ></app-product-card>
+      </div>
+    </div>
+
+  </div>

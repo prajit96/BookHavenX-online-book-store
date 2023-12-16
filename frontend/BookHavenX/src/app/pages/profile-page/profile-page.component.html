@@ -1,0 +1,81 @@
+<div class="min-h-[70vh] lg:w-[90%] md:w-[98%] m-auto flex justify-center items-center">
+
+    <!-- Dashboard  -->
+    <div class="h-[700px] w-[100%] flex lg:gap-5 md:gap-2 lg:mt-[40px] md:mt-5 mb-[40px]">
+        <!-- Sidebar  -->
+        <div id="sidebar" class="min-h-[600px] border border-green-600 w-[25%] bg-[#2B2A4C] p-3">
+            <!-- Profile  -->
+            <div class="flex flex-col items-center gap-1">
+                <img src="{{user.image}}" alt="avatar" class="w-[150px] rounded-full">
+                <h1 class="font-bold text-white text-[20px] mt-2">{{user.username.toUpperCase()}}</h1>
+                <p class="font-bold text-[16px] text-gray-400">{{user.role.toUpperCase()}}</p>
+            </div>
+             <!-- Menu Bar  -->
+             <div class="mt-5">
+                <ul class="flex flex-col">
+                    <li (click)="myProfile()" [style.color]="tabOpen === 'myprofile' ? 'red' : 'white'" class="flex gap-4 items-center pl-5 border-b border-t p-2 border-gray-500 text-white hover:bg-gray-400 cursor-pointer">
+                        <i class="fa-solid fa-user"></i>
+                        <a >My Profile</a>
+                    </li>
+
+                    <li (click)="orders()" [style.color]="tabOpen === 'orders' ? 'red' : 'white'" class="flex gap-4 items-center pl-5 border-b border-t p-2 border-gray-500 text-white hover:bg-gray-400 cursor-pointer">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <a >Orders</a>
+                    </li>
+
+                    <li (click)="savedAddresses()" [style.color]="tabOpen === 'addresses' ? 'red' : 'white'" class="flex gap-4 items-center pl-5 border-b border-t p-2 border-gray-500 text-white hover:bg-gray-400 cursor-pointer">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <a >Saved Addresses</a>
+                    </li>
+                  
+                    <li *ngIf="role !== 'reader'" (click)="books()" [style.color]="tabOpen === 'books' ? 'red' : 'white'" class="flex gap-4 items-center pl-5 border-b border-t p-2 border-gray-500 text-white hover:bg-gray-400 cursor-pointer">
+                        <i class="fa-solid fa-book"></i>
+                        <a >Books</a>
+                    </li>
+
+                    <li *ngIf="role === 'admin'" (click)="userlists()" [style.color]="tabOpen === 'userlists' ? 'red' : 'white'" class="flex gap-4 items-center pl-5 border-b border-t p-2 border-gray-500 text-white hover:bg-gray-400 cursor-pointer">
+                        <i class="fa-solid fa-users"></i>
+                        <a >Users List</a>
+                    </li>
+                </ul>
+                
+             </div>
+        </div>
+
+        <!-- View Section  -->
+        <div id="view-section" class="border border-gray-300 shadow-md w-[80%]">
+            
+            <div *ngIf="!loading">
+                <div *ngIf="tabOpen == 'myprofile'">
+                    <app-myprofile></app-myprofile>
+                </div>
+    
+                <div *ngIf="tabOpen == 'orders'">
+                    <app-orders></app-orders>
+                </div>
+    
+                <div *ngIf="tabOpen == 'addresses'">
+                    <app-addresses></app-addresses>
+                </div>
+    
+                <div *ngIf="tabOpen == 'books'">
+                    <app-books></app-books>
+                </div>
+    
+                <div *ngIf="tabOpen == 'userlists'">
+                    <app-userlists></app-userlists>
+                </div>
+            </div>
+
+        
+            <!-- Loading  -->
+            <div *ngIf="loading" id="loading-cont" class="h-[500px] flex justify-center items-center">
+                <app-loading [w]="'60px'" [h]="'60px'"></app-loading>
+            </div>
+        </div>
+    </div>
+
+
+
+    
+</div>

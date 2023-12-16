@@ -1,0 +1,55 @@
+<div id="home">
+    <div id="menu-bar" class="p-3 pt-4 pb-4 bg-white sticky lg:top-[78.16px] md:top-[62px] z-30 shadow-md">
+        <ul class="flex justify lg:text-[17px] md:text-[15px] font-bold text-gray-600">
+          <li (click)="selectGenre()" class="mr-2 hover:text-[#000000] cursor-pointer">All</li>
+          <li class="mr-2">|</li>
+          <li (click)="selectGenre('romance')" class="mr-2 hover:text-[#000000] cursor-pointer">Romance</li>
+          <li class="mr-2">|</li>
+          <li (click)="selectGenre('horror')" class="mr-2 hover:text-[#000000] cursor-pointer">Horror</li>
+          <li class="mr-2">|</li>
+          <li (click)="selectGenre('science fiction')" class="mr-2 hover:text-[#000000] cursor-pointer">Science Fiction</li>
+          <li class="mr-2">|</li>
+          <li (click)="selectGenre('mystery')" class="mr-2 hover:text-[#000000] cursor-pointer">Mystery</li>
+          <li class="mr-2">|</li>
+          <li (click)="selectGenre('historical')" class="mr-2 hover:text-[#000000] cursor-pointer">Historical</li>
+          <li class="mr-2">|</li>
+          <li (click)="selectGenre('exam books')" class="hover:text-[#000000] cursor-pointer">Exam Books</li>
+        </ul>
+      </div>
+      
+    <div id="carousel" class="mt-3">
+        <app-carousel></app-carousel>
+    </div>
+
+    <div id="trending-categories" class="lg:w-[80%] md:w-[90%] m-auto mt-[40px]">
+        <h1 class="lg:text-[24px] md:text-[18px] mb-3 text-gray-600 font-bold">Trending Categories</h1>
+        <div class="flex justify-between">
+            <img (click)="selectGenre()" src="../../../assets/images/trending-categories-1.jpg" alt="1" width="32%" class="rounded-xl cursor-pointer">
+            <img (click)="selectGenre()" src="../../../assets/images/trending-categories-2.jpg" alt="2" width="32%" class="rounded-xl cursor-pointer">
+            <img (click)="selectGenre()" src="../../../assets/images/trending-categories-3.jpg" alt="3" width="32%" class="rounded-xl cursor-pointer">
+        </div>
+    </div>
+
+    <div id="posters" class="lg:w-[80%] md:w-[90%] m-auto mt-[60px]">
+        <div class="flex justify-between">
+            <img (click)="selectGenre()" src="../../../assets/images/posters-1.jpg" alt="1" width="48%" class="rounded-xl cursor-pointer">
+            <img (click)="selectGenre()" src="../../../assets/images/posters-2.jpg" alt="2" width="48%" class="rounded-xl cursor-pointer">
+        </div>
+    </div>
+
+    <div id="four-cateogries" class="lg:w-[80%] md:w-[90%] m-auto mt-[60px]">
+        <h1 class="lg:text-[24px] md:text-[18px] mb-3 text-gray-600 font-bold">New Arrivals</h1>
+        <div class="flex justify-between">
+            <img (click)="selectGenre('historical')" src="../../../assets/images/for-cateogries-1.jpg" alt="1" width="24%" class="rounded-xl cursor-pointer">
+            <img (click)="selectGenre()" src="../../../assets/images/for-cateogries-2.jpg" alt="1" width="24%" class="rounded-xl cursor-pointer">
+            <img (click)="selectGenre('mystery')" src="../../../assets/images/for-cateogries-3.jpg" alt="1" width="24%" class="rounded-xl cursor-pointer">
+            <img (click)="selectGenre()" src="../../../assets/images/for-cateogries-4.jpg" alt="1" width="24%" class="rounded-xl cursor-pointer">
+        </div>
+    </div>
+
+    <div id="posters" class="mt-[60px] mb-[40px]">
+        <img (click)="selectGenre()" src="../../../assets/images/offer.jpg" alt="offer" width="100%">
+    </div>
+
+    
+</div>

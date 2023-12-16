@@ -1,0 +1,78 @@
+<div class="lg:w-[90%] md:w-[97%] m-auto mt-[30px]">
+    <div id="container" class="flex gap-[20px]">
+        <!-- Discussion List  -->
+        <div id="discussion-list" class="lg:w-[30%] md:w-[40%] shadow-lg">
+            <!-- Header  -->
+            <select name="filterBy" [(ngModel)]="filterBy" (change)="filterDiscussion()"  id="filterBy" class="w-[100%] font-bold text-white bg-[#2B2A4C]">
+                <option value="all">All Discussions</option>
+                <option value="user">Your Discussions</option>
+                <option value="author">Author's Discussions</option>
+            </select>
+            <!-- No Discussion  -->
+            <div *ngIf="discussionLists.length === 0" class="h-[550px] flex justify-center items-center bg-black p-4">
+                <h1 class="lg:text-[25px] md:text-[20px] font-extrabold text-[#B31312]">No Discussions Found</h1>
+            </div>
+
+            <div *ngIf="discussionLists.length !== 0" class="h-[550px] flex flex-col gap-1 bg-black p-4 text-white">
+                <div *ngIf="!listloading">
+                    <div *ngFor="let item of discussionLists" (click)="handleViewDiscussion(item._id)" class="border-b pb-2 cursor-pointer">
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-user-group"></i>
+                                <p class="font-semibold break-words hover:underline"  [style.color] = "item._id === discussionID ? 'blue' : 'white'">{{item.title}}</p>
+                            </div>
+                            <button *ngIf="filterBy === 'user'" (click)="handleDeleteDiscussion(item._id)">
+                                <i class="fa-solid fa-trash text-[10px] text-red-600"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-user text-[10px] text-green-400"></i>
+                            <p class="font-semibold text-[12px] text-green-400">{{item.username}}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- List Loading  -->
+                <div *ngIf="listloading" class="h-[400px] flex justify-center items-center">
+                    <app-loading [w]="'50px'" [h]="'50px'"></app-loading>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Chat Container  -->
+        <div id="chat-cont" class="h-[600px] lg:w-[70%] md:w-[60%] flex flex-col justify-between shadow-lg">
+            <!-- Header  -->
+            <div class="flex justify-between items-center bg-[#B31312] lg:text-[25px] md:text-[16px] font-extrabold text-white p-1">
+                <p></p>
+                <h1 class="text-center">Chat</h1>
+                <button (click)="handleRefreshChat()"><i class="fa-solid fa-rotate-right mr-2 hover:text-green-400"></i></button>
+            </div>
+            <!-- No Comments  -->
+            <div *ngIf="discussionPosts.length === 0 && !chatloading" class="h-[550px] flex justify-center items-center bg-black p-4">
+                <h1 class="lg:text-[25px] md:text-[20px] font-extrabold text-[#B31312]">No Message Found</h1>
+            </div>
+            <!-- Chat Interaction -->
+            <div class="h-[500px] p-2 flex flex-col gap-2 bg-black overflow-y-auto">
+                <div *ngIf="!chatloading">
+                    <div *ngFor="let post of discussionPosts">
+                        <p class="bg-blue-500 p-2 rounded-lg break-words shadow-sm text-white" >{{post.message}}</p>
+                        <div class="flex items-center gap-[5px]">
+                            <i class="fa-solid fa-user text-gray-500 text-[10px]"></i>
+                            <p class="text-gray-500 text-[16px]">{{post.username}}</p>
+                            <p class="text-gray-500 text-[13px]">{{formattedTime(post.timestamp)}}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Chat Loading  -->
+                <div *ngIf="chatloading" class="h-[400px] flex justify-center items-center">
+                    <app-loading [w]="'50px'" [h]="'50px'"></app-loading>
+                </div>
+            </div>
+            <!-- Input Field  -->
+            <div id="inputField" class="flex items-center p-4 bg-[#2B2A4C]">
+                <input type="text" [(ngModel)]="userMessage" (keyup.enter)="sendMessage()" placeholder="Type your message..." class="flex-grow border-2 border-gray-300 p-2 rounded-md mr-2 focus:outline-none focus:border-blue-500" />
+                <button (click)="sendMessage()" class="bg-black text-white p-2 rounded-md hover:bg-[#1e1e36]">Send</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<div>
+    <div class="bg-[#2B2A4C] p-2 mb-2">
+        <h1 class="text-white font-bold text-center">Order History</h1>
+    </div>
+    <!-- List  -->
+    <div *ngIf="!loading" id="purchase-list" class="h-[668px] flex flex-col gap-2 p-3 overflow-y-auto">
+        <div *ngFor="let order of purchases">
+            <div *ngFor="let item of order.books" class="flex justify-between items-center border-b">
+                <div class="flex gap-2 ">
+                    <div class="w-[55px]">
+                        <img src="{{item.image}}" alt="" class="w-[100%] object-cover">
+                    </div>
+                    <div class="p-1">
+                        <h1 class="font-bold">{{item.title}}</h1>
+                        <div class="flex gap-2">
+                            <p class="text-green-700 font-bold text-[15px]">₹{{item.price}} X {{item.quantity}}</p>
+                            <p class="text-[#EA906C] font-bold text-[15px]">Order : {{order._id}}</p>
+                        </div>
+                        <p class="text-[15px] text-gray-500">{{order.delivery_address}}</p>
+                    </div>
+                </div>
+                <div>
+                    <button (click)="cancelOrder(item._id)" class="font-bold text-red-700 mr-4 hover:text-red-800">Cancel Order</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    
+
+
+    <!-- Loading  -->
+    <div *ngIf="loading" id="loading-cont" class="h-[500px] flex justify-center items-center">
+        <app-loading [w]="'60px'" [h]="'60px'"></app-loading>
+    </div>
+
+</div>
